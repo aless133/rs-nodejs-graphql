@@ -1,3 +1,4 @@
+export default `#graphql
 type User {
   id: ID!
   firstName: String!
@@ -17,3 +18,10 @@ type Profile {
   userId: String!
   memberTypeId: String!
 }
+
+type Query {
+  test: String
+  users: [User]
+  profiles: [Profile]
+}
+`;

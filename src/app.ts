@@ -12,6 +12,6 @@ const app: FastifyPluginAsync = async (fastify): Promise<void> => {
     dir: join(__dirname, 'routes'),
     options: {},
   });
-};
+}; 123
 
 export default app;
