@@ -63,12 +63,13 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
     async function (request, reply): Promise<UserEntity | null> {
       const user = await fastify.db.users.findOne({ key: 'id', equals: request.params.id });
       if (user) {
-        if (await fastify.db.users.findOne({ key: 'id', equals: request.body.userId })) {
-          if (user.subscribedToUserIds.includes(request.body.userId)) {
-            return user;
+        const user2 = await fastify.db.users.findOne({ key: 'id', equals: request.body.userId })
+        if (user2) {
+          if (user2.subscribedToUserIds.includes(request.params.id)) {
+            return user2;
           } else {
-            return fastify.db.users.change(request.params.id, {
-              subscribedToUserIds: [...user.subscribedToUserIds, request.body.userId],
+            return fastify.db.users.change(user2.id, {
+              subscribedToUserIds: [...user2.subscribedToUserIds, user.id],
             });
           }
         } else {
@@ -91,11 +92,12 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
     async function (request, reply): Promise<UserEntity | null> {
       const user = await fastify.db.users.findOne({ key: 'id', equals: request.params.id });
       if (user) {
-        if (await fastify.db.users.findOne({ key: 'id', equals: request.body.userId })) {
-          const i = user.subscribedToUserIds.indexOf(request.body.userId);
+        const user2 = await fastify.db.users.findOne({ key: 'id', equals: request.body.userId });
+        if (user2) {
+          const i = user2.subscribedToUserIds.indexOf(user.id);
           if (i >= 0) {
-            user.subscribedToUserIds.splice(i, 1);
-            return fastify.db.users.change(request.params.id, { subscribedToUserIds: user.subscribedToUserIds });
+            user2.subscribedToUserIds.splice(i, 1);
+            return fastify.db.users.change(user2.id, { subscribedToUserIds: user2.subscribedToUserIds });
           } else {
             throw fastify.httpErrors.badRequest('Not subscribed');
           }
