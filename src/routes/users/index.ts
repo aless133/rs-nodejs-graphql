@@ -2,6 +2,8 @@ import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-sc
 import { idParamSchema } from '../../utils/reusedSchemas';
 import { createUserBodySchema, changeUserBodySchema, subscribeBodySchema } from './schemas';
 import type { UserEntity } from '../../utils/DB/entities/DBUsers';
+import type { ProfileEntity } from '../../utils/DB/entities/DBProfiles';
+import type { PostEntity } from '../../utils/DB/entities/DBPosts';
 
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> => {
   fastify.get('/', async function (request, reply): Promise<UserEntity[]> {
@@ -23,6 +25,33 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       return user;
     }
   );
+
+  fastify.get(
+    '/:id/profile',
+    {
+      schema: {
+        params: idParamSchema,
+      },
+    },
+    async function (request, reply): Promise<ProfileEntity> {
+      const profile = await fastify.db.profiles.findOne({ key: 'userId', equals: request.params.id });
+      if (!profile) {
+        throw fastify.httpErrors.notFound('User profile not found');
+      }
+      return profile;
+    }
+  );  
+  fastify.get(
+    '/:id/posts',
+    {
+      schema: {
+        params: idParamSchema,
+      },
+    },
+    async function (request, reply): Promise<PostEntity[]> {
+      return await fastify.db.posts.findMany({ key: 'userId', equals: request.params.id });
+    }
+  );   
 
   fastify.post(
     '/',

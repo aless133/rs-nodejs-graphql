@@ -5,5 +5,14 @@ export const profilesResolver = {
     profiles: (parent: any, args: any, { dataSources }: ApolloContext, info: any) => {
       return dataSources.profilesAPI.getProfiles();
     },
+    profile: (parent: any, { id }: { id: string }, { dataSources }: ApolloContext, info: any) => {
+      return dataSources.profilesAPI.getProfile(id);
+    },
   },
+
+  Profile: {
+    memberType: (parent: any, { id }: { id: string }, { dataSources }: ApolloContext, info: any) => {
+      return dataSources.profilesAPI.getMemberType(id);
+    },
+  }
 };

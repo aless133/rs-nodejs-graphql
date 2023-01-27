@@ -2,6 +2,7 @@ import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-sc
 import { idParamSchema } from '../../utils/reusedSchemas';
 import { createProfileBodySchema, changeProfileBodySchema } from './schema';
 import type { ProfileEntity } from '../../utils/DB/entities/DBProfiles';
+import type { MemberTypeEntity } from '../../utils/DB/entities/DBMemberTypes';
 
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> => {
   fastify.get('/', async function (request, reply): Promise<ProfileEntity[]> {
@@ -21,6 +22,26 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
         throw fastify.httpErrors.notFound('Profile not found');
       }
       return profile;
+    }
+  );
+
+  fastify.get(
+    '/:id/member-type',
+    {
+      schema: {
+        params: idParamSchema,
+      },
+    },
+    async function (request, reply): Promise<MemberTypeEntity> {
+      const profile = await fastify.db.profiles.findOne({ key: 'id', equals: request.params.id });
+      if (!profile) {
+        throw fastify.httpErrors.notFound('Profile not found');
+      }
+      const mt = await fastify.db.memberTypes.findOne({ key: 'id', equals: profile.memberTypeId });
+      if (!mt) {
+        throw fastify.httpErrors.notFound('Profile Member Type not found');
+      }
+      return mt;
     }
   );
 
