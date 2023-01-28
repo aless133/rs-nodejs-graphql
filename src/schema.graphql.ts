@@ -4,6 +4,7 @@ type User {
   firstName: String!
   lastName: String!
   email: String!
+  subscribedToUserIds: [String]!
   profile: Profile
   posts: [Post]
 }
