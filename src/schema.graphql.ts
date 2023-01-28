@@ -36,6 +36,27 @@ type Profile {
   memberType: MemberType
 }
 
+input CreateProfileInput {
+  avatar: String!
+  sex: String!
+  birthday: Int!
+  country: String!
+  street: String!
+  city: String!
+  userId: String!
+  memberTypeId: String!
+}
+
+input UpdateProfileInput {
+  avatar: String
+  sex: String
+  birthday: Int
+  country: String
+  street: String
+  city: String
+  memberTypeId: String
+}
+
 type Post {
   id: ID!
   title: String!
@@ -44,7 +65,7 @@ type Post {
 }
 
 type MemberType {
-  id: ID!
+  id: String!
   discount: Int
   monthPostsLimit: Int
 }
@@ -64,5 +85,7 @@ type Query {
 type Mutation {
   createUser(input: CreateUserInput!): User
   updateUser(id: ID!, input: UpdateUserInput!): User
+  createProfile(input: CreateProfileInput!): Profile
+  updateProfile(id: ID!, input: UpdateProfileInput!): Profile
 }
 `;

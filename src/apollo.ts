@@ -27,6 +27,7 @@ const resolvers = {
   Profile: profilesResolver.Profile,
   Mutation: {
     ...usersResolver.Mutation,
+    ...profilesResolver.Mutation,
   },
 };
 

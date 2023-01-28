@@ -11,12 +11,7 @@ export class UsersAPI extends CommonAPI {
   async getUser(id: string): Promise<UserEntity> {
     return this.get<UserEntity>(`users/${encodeURIComponent(id)}`);
   }
-  async createUser(input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
-    return this.post<UserEntity>(`users`,{ body: input });
-  }
-  async updateUser(id: string, input: Partial<Omit<UserEntity, 'id' | 'subscribedToUserIds'>>): Promise<UserEntity> {
-    return this.patch<UserEntity>(`users/${encodeURIComponent(id)}`,{ body: input });
-  }
+
   async getProfile(id: string): Promise<ProfileEntity> {
     return this.get<ProfileEntity>(`users/${encodeURIComponent(id)}/profile`);
   } 
@@ -31,6 +26,13 @@ export class UsersAPI extends CommonAPI {
 
   async getFollowers(id: string): Promise<PostEntity[]> {
     return this.get<PostEntity[]>(`users/${encodeURIComponent(id)}/followers`);
-  }    
+  }   
+  
+  async createUser(input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
+    return this.post<UserEntity>(`users`,{ body: input });
+  }
+  async updateUser(id: string, input: Partial<Omit<UserEntity, 'id' | 'subscribedToUserIds'>>): Promise<UserEntity> {
+    return this.patch<UserEntity>(`users/${encodeURIComponent(id)}`,{ body: input });
+  }  
 
 }

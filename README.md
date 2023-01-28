@@ -10,7 +10,7 @@ If the properties of the entity are not specified, then return the id of it.
 `userSubscribedTo` - these are users that the current user is following.  
 `subscribedToUser` - these are users who are following the current user.  
    
-   * Get gql requests:  
+   #### Get gql requests:
    2.1. Get users, profiles, posts, memberTypes - 4 operations in one query.  
    ```
    {
@@ -202,7 +202,7 @@ If the properties of the entity are not specified, then return the id of it.
       }
    }
    ``` 
-   * Create gql requests:   
+   #### Create gql requests:
    2.8. Create user.  
    ```
    mutation ($input: CreateUserInput!) {
@@ -224,9 +224,34 @@ If the properties of the entity are not specified, then return the id of it.
    }
    ```   
    2.9. Create profile.  
+   ```
+   mutation ($input: CreateProfileInput!) {
+      createProfile(input: $input) {
+         id
+         avatar
+      }
+   }
+   ```  
+   Example variables: 
+   ```
+   {
+      "input":{
+         "avatar": "fmq",
+         "sex": "s",
+         "birthday": 27,
+         "country": "b",
+         "street": "bel",
+         "city": "mmm",
+         "memberTypeId": "basic",
+         "userId": "564ea653-4648-4181-99d6-71600a553384"
+      }
+   }   
+   ```
+
    2.10. Create post.  
    2.11. [InputObjectType](https://graphql.org/graphql-js/type/#graphqlinputobjecttype) for DTOs.  
-   * Update gql requests:  
+   
+   #### Update gql requests:
    2.12. Update user.
    ```  
    mutation ($id: ID!, $input: UpdateUserInput!) {
@@ -246,8 +271,30 @@ If the properties of the entity are not specified, then return the id of it.
          "firstName":"fn-new",
       }
    }
-```    
-   2.13. Update profile.  
+   ```    
+   2.13. Update profile. 
+   ```
+   mutation ($id: ID!, $input: UpdateProfileInput!) {
+      updateProfile(id: $id, input: $input) {
+         id
+         avatar
+         sex
+         birthday
+      }
+   }    
+   ```
+   Example variables:
+   ```
+   {
+      "id": "082e852b-2d59-4bd8-b1e3-97f62d39e59e",
+      "input":{
+         "avatar": "fmq111",
+         "sex": "ssdd",
+         "birthday": 27
+      }
+   }   
+   ```
+
    2.14. Update post.  
    2.15. Update memberType.  
    2.16. Subscribe to; unsubscribe from.  
