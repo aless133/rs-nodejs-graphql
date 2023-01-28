@@ -1,34 +1,52 @@
 import { ApolloContext } from '../apollo';
-import { GraphQLObjectType, GraphQLInputObjectType, GraphQLList, GraphQLString, GraphQLID } from 'graphql';
+import { GraphQLObjectType, GraphQLInputObjectType, GraphQLList, GraphQLString, GraphQLID, GraphQLNonNull  } from 'graphql';
 import { UserEntity } from '../utils/DB/entities/DBUsers';
 
 const UserType = new GraphQLObjectType({
   name: 'User',
   fields: {
-    id: { type: GraphQLString },
-    firstName: { type: GraphQLString },
-    lastName: { type: GraphQLString },
-    email: { type: GraphQLString },
-    subscribedToUser: { type: new GraphQLList(GraphQLID)},
+    id: { type: GraphQLID },
+    firstName: { type: new GraphQLNonNull(GraphQLString) },
+    lastName: { type: new GraphQLNonNull(GraphQLString) },
+    email: { type: new GraphQLNonNull(GraphQLString) },
+    subscribedToUser: { type: new GraphQLList(GraphQLID) },
   },
 });
 
-const CreateUserInput = new GraphQLInputObjectType({
-  name: 'CreateUserInput',
+const UserInput = new GraphQLInputObjectType({
+  name: 'UserInput',
   fields: {
-    firstName: { type: GraphQLString },
-    lastName: { type: GraphQLString },
-    email: { type: GraphQLString },
+    firstName: { type: new GraphQLNonNull(GraphQLString) },
+    lastName: { type: new GraphQLNonNull(GraphQLString) },
+    email: { type: new GraphQLNonNull(GraphQLString) },
   },
 });
 
 const createUserMutation = {
   type: UserType,
   args: {
-    input: { type: CreateUserInput },
+    input: { type: UserInput },
   },
-  resolve: (_: any, { input }: {input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>},  { dataSources }: ApolloContext) => {
+  resolve: (
+    _: any,
+    { input }: { input: Omit<UserEntity, 'id' | 'subscribedToUserIds'> },
+    { dataSources }: ApolloContext
+  ) => {
     return dataSources.usersAPI.createUser(input);
+  },
+};
+
+const updateUserMutation = {
+  type: UserType,
+  args: {
+    input: { type: UserInput },
+  },
+  resolve: (
+    _: any,
+    { id, input }: { id: string, input: Omit<UserEntity, 'id' | 'subscribedToUserIds'> },
+    { dataSources }: ApolloContext
+  ) => {
+    return dataSources.usersAPI.updateUser(id, input);
   },
 };
 
@@ -56,6 +74,7 @@ export const usersResolver = {
     },
   },
   Mutation: {
-    createUser: (_: any, args: any, context: any) => createUserMutation.resolve(_, args, context)
-  }
+    createUser: (_: any, args: any, context: any) => createUserMutation.resolve(_, args, context),
+    updateUser: (_: any, args: any, context: any) => updateUserMutation.resolve(_, args, context),
+  },
 };

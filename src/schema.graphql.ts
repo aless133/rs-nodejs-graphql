@@ -11,7 +11,7 @@ type User {
   posts: [Post]
 }
 
-input CreateUserInput {
+input UserInput {
   firstName: String!
   lastName: String!
   email: String!
@@ -56,6 +56,7 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput): User
+  createUser(input: UserInput!): User
+  updateUser(id: ID!, input: UserInput!): User
 }
 `;

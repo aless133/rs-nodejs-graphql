@@ -46,7 +46,7 @@ If the properties of the entity are not specified, then return the id of it.
    ```
    2.2. Get user, profile, post, memberType by id - 4 operations in one query.  
    ```
-   query getAllByIds($userId: ID!, $profileId:ID!, $postId:ID!, $memberTypeId: ID!) {
+   query ($userId: ID!, $profileId:ID!, $postId:ID!, $memberTypeId: ID!) {
       user (id: $userId) {
          id
          firstName
@@ -204,11 +204,51 @@ If the properties of the entity are not specified, then return the id of it.
    ``` 
    * Create gql requests:   
    2.8. Create user.  
+   ```
+   mutation ($input: UserInput!) {
+      createUser(input: $input) {
+         id
+         firstName
+         email
+      }
+   }
+   ```   
+   Example variables:
+   ```
+   {
+      "input":{
+         "firstName":"fn",
+         "lastName":"ln",
+         "email":"e@mail"
+      }
+   }
+   ```   
    2.9. Create profile.  
    2.10. Create post.  
    2.11. [InputObjectType](https://graphql.org/graphql-js/type/#graphqlinputobjecttype) for DTOs.  
    * Update gql requests:  
-   2.12. Update user.  
+   2.12. Update user.
+   ```  
+   mutation ($id: ID!, $input: UserInput!) {
+      updateUser(id:$id, input: $input) {
+         id
+         firstName
+         email
+         subscribedToUserIds
+      }
+   }
+   ```  
+   Example variables:
+   ```
+   {
+      "id": "aa827335-b2ce-42a7-8efd-c0970e6dc30e",
+      "input":{
+         "firstName":"fn2",
+         "lastName":"ln2",
+         "email":"e@mail"
+      }
+   }
+```    
    2.13. Update profile.  
    2.14. Update post.  
    2.15. Update memberType.  
