@@ -15,8 +15,8 @@ import { MemberTypesAPI } from './datasources/membertypes.rest';
 
 const resolvers = {
   Query: {
-    test: (parent: any, args: any, context: ApolloContext, info: any) => {
-      return 'GraphQL online ' + context.dummy;
+    time: (parent: any, args: any, context: ApolloContext, info: any) => {
+      return 'GraphQL online ' + context.time;
     },
     ...usersResolver.Query,
     ...profilesResolver.Query,
@@ -44,7 +44,7 @@ export const getApollo = async () => {
 };
 
 export interface ApolloContext {
-  dummy: number;
+  time: string;
   dataSources: {
     usersAPI: UsersAPI;
     profilesAPI: ProfilesAPI;
@@ -55,7 +55,7 @@ export interface ApolloContext {
 export const getApolloContext: ApolloFastifyContextFunction<ApolloContext> = async (_request, _reply) => {
   const { cache } = apollo;
   return {
-    dummy: 1,
+    time: new Date().toUTCString(),
     dataSources: {
       usersAPI: new UsersAPI({ cache }),
       profilesAPI: new ProfilesAPI({ cache }),

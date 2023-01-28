@@ -71,7 +71,7 @@ type MemberType {
 }
 
 type Query {
-  test: String
+  time: String
   users: [User]
   user (id: ID!): User
   profiles: [Profile]
