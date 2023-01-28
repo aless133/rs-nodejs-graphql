@@ -11,6 +11,9 @@ export class UsersAPI extends CommonAPI {
   async getUser(id: string): Promise<UserEntity> {
     return this.get<UserEntity>(`users/${encodeURIComponent(id)}`);
   }
+  async createUser(input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
+    return this.post<UserEntity>(`users`,{ body: input });
+  }
 
   async getProfile(id: string): Promise<ProfileEntity> {
     return this.get<ProfileEntity>(`users/${encodeURIComponent(id)}/profile`);

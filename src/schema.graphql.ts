@@ -11,6 +11,12 @@ type User {
   posts: [Post]
 }
 
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+}
+
 type Profile {
   id: ID!  
   avatar: String!
@@ -47,5 +53,9 @@ type Query {
   post (id: ID!): Post
   memberTypes: [MemberType]
   memberType (id: ID!): MemberType
+}
+
+type Mutation {
+  createUser(input: CreateUserInput): User
 }
 `;

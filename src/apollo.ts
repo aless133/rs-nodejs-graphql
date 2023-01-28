@@ -25,6 +25,9 @@ const resolvers = {
   },
   User: usersResolver.User,
   Profile: profilesResolver.Profile,
+  Mutation: {
+    ...usersResolver.Mutation,
+  },
 };
 
 const apollo = new ApolloServer<ApolloContext>({
