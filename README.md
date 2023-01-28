@@ -305,7 +305,8 @@ If the properties of the entity are not specified, then return the id of it.
    It's ok to leave the use of the dataloader even if only one entity was requested. But additionally (no extra score) you can optimize the behavior for such cases => +1 db call is allowed per loader.  
    3.1. List where the dataloader was used with links to the lines of code (creation in gql context and call in resolver).  
 4. Limit the complexity of the graphql queries by their depth with [graphql-depth-limit](https://www.npmjs.com/package/graphql-depth-limit) package.   
-   4.1. Provide a link to the line of code where it was used.  
+   4.1. Provide a link to the line of code where it was used. (https://github.com/aless133/rs-nodejs-graphql/blob/565db3a690fc166a3c687bba8bf9c055563d50c1/src/apollo.ts#L37)
+   
    4.2. Specify a POST body of gql query that ends with an error due to the operation of the rule. Request result should be with `errors` field (and with or without `data:null`) describing the error.  
    Query example
    ```
