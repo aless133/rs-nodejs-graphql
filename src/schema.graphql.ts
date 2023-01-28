@@ -11,10 +11,16 @@ type User {
   posts: [Post]
 }
 
-input UserInput {
+input CreateUserInput {
   firstName: String!
   lastName: String!
   email: String!
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  email: String
 }
 
 type Profile {
@@ -56,7 +62,7 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: UserInput!): User
-  updateUser(id: ID!, input: UserInput!): User
+  createUser(input: CreateUserInput!): User
+  updateUser(id: ID!, input: UpdateUserInput!): User
 }
 `;

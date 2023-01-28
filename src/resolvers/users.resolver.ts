@@ -13,8 +13,17 @@ const UserType = new GraphQLObjectType({
   },
 });
 
-const UserInput = new GraphQLInputObjectType({
-  name: 'UserInput',
+const CreateUserInput = new GraphQLInputObjectType({
+  name: 'CreateUserInput',
+  fields: {
+    firstName: { type: new GraphQLNonNull(GraphQLString) },
+    lastName: { type: new GraphQLNonNull(GraphQLString) },
+    email: { type: new GraphQLNonNull(GraphQLString) },
+  },
+});
+
+const UpdateUserInput = new GraphQLInputObjectType({
+  name: 'UpdateUserInput',
   fields: {
     firstName: { type: new GraphQLNonNull(GraphQLString) },
     lastName: { type: new GraphQLNonNull(GraphQLString) },
@@ -25,7 +34,7 @@ const UserInput = new GraphQLInputObjectType({
 const createUserMutation = {
   type: UserType,
   args: {
-    input: { type: UserInput },
+    input: { type: CreateUserInput },
   },
   resolve: (
     _: any,
@@ -39,11 +48,11 @@ const createUserMutation = {
 const updateUserMutation = {
   type: UserType,
   args: {
-    input: { type: UserInput },
+    input: { type: UpdateUserInput },
   },
   resolve: (
     _: any,
-    { id, input }: { id: string, input: Omit<UserEntity, 'id' | 'subscribedToUserIds'> },
+    { id, input }: { id: string, input: Partial<Omit<UserEntity, 'id' | 'subscribedToUserIds'>> },
     { dataSources }: ApolloContext
   ) => {
     return dataSources.usersAPI.updateUser(id, input);

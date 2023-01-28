@@ -205,7 +205,7 @@ If the properties of the entity are not specified, then return the id of it.
    * Create gql requests:   
    2.8. Create user.  
    ```
-   mutation ($input: UserInput!) {
+   mutation ($input: CreateUserInput!) {
       createUser(input: $input) {
          id
          firstName
@@ -229,7 +229,7 @@ If the properties of the entity are not specified, then return the id of it.
    * Update gql requests:  
    2.12. Update user.
    ```  
-   mutation ($id: ID!, $input: UserInput!) {
+   mutation ($id: ID!, $input: UpdateUserInput!) {
       updateUser(id:$id, input: $input) {
          id
          firstName
@@ -243,9 +243,7 @@ If the properties of the entity are not specified, then return the id of it.
    {
       "id": "aa827335-b2ce-42a7-8efd-c0970e6dc30e",
       "input":{
-         "firstName":"fn2",
-         "lastName":"ln2",
-         "email":"e@mail"
+         "firstName":"fn-new",
       }
    }
 ```    

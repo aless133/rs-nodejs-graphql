@@ -14,7 +14,7 @@ export class UsersAPI extends CommonAPI {
   async createUser(input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
     return this.post<UserEntity>(`users`,{ body: input });
   }
-  async updateUser(id: string, input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
+  async updateUser(id: string, input: Partial<Omit<UserEntity, 'id' | 'subscribedToUserIds'>>): Promise<UserEntity> {
     return this.patch<UserEntity>(`users/${encodeURIComponent(id)}`,{ body: input });
   }
   async getProfile(id: string): Promise<ProfileEntity> {
