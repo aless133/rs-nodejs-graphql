@@ -19,4 +19,13 @@ export class UsersAPI extends CommonAPI {
   async getPosts(id: string): Promise<PostEntity[]> {
     return this.get<PostEntity[]>(`users/${encodeURIComponent(id)}/posts`);
   }    
+
+  async getFollowing(id: string): Promise<ProfileEntity> {
+    return this.get<ProfileEntity>(`users/${encodeURIComponent(id)}/following`);
+  } 
+
+  async getFollowers(id: string): Promise<PostEntity[]> {
+    return this.get<PostEntity[]>(`users/${encodeURIComponent(id)}/followers`);
+  }    
+
 }

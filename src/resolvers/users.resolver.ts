@@ -16,5 +16,11 @@ export const usersResolver = {
     posts: (parent: any, args: any, { dataSources }: ApolloContext, info: any) => {
       return dataSources.usersAPI.getPosts(parent.id);
     },
+    subscribedToUser: (parent: any, args: any, { dataSources }: ApolloContext, info: any) => {
+      return dataSources.usersAPI.getFollowers(parent.id);
+    },
+    userSubscribedTo: (parent: any, args: any, { dataSources }: ApolloContext, info: any) => {
+      return dataSources.usersAPI.getFollowing(parent.id);
+    },
   },
 };

@@ -46,18 +46,17 @@ If the properties of the entity are not specified, then return the id of it.
    ```
    2.2. Get user, profile, post, memberType by id - 4 operations in one query.  
    ```
-   query getAllByIds($userId: ID!, $profileId:ID!, $postId:ID!,$memberTypeId: ID!) {
+   query getAllByIds($userId: ID!, $profileId:ID!, $postId:ID!, $memberTypeId: ID!) {
       user (id: $userId) {
          id
          firstName
-         lastName
-         email
       }
       profile (id: $profileId) {
+         id
          avatar
-         city
       }
       post (id: $postId) {
+         id
          title
       }
       memberType (id: $memberTypeId) {
@@ -82,8 +81,6 @@ If the properties of the entity are not specified, then return the id of it.
       users {
          id
          firstName
-         lastName
-         email
          profile {
                id
                avatar
@@ -128,9 +125,83 @@ If the properties of the entity are not specified, then return the id of it.
       "userId":"550d8113-d76f-4d7d-af55-d3bb342ddbe4",
    }   
    ```       
-   2.5. Get users with their `userSubscribedTo`, profile.  
+   2.5. Get users with their `userSubscribedTo`, profile. 
+   ```
+   {
+      users {
+         id
+         firstName
+         userSubscribedTo {
+               id
+               firstName
+               profile {
+                  id
+                  avatar
+               }
+         }
+         profile {
+            id
+            avatar
+         }
+      }
+   }
+   ```    
    2.6. Get user by id with his `subscribedToUser`, posts.  
-   2.7. Get users with their `userSubscribedTo`, `subscribedToUser` (additionally for each user in `userSubscribedTo`, `subscribedToUser` add their `userSubscribedTo`, `subscribedToUser`).  
+   ```
+   query ($userId: ID!) {
+      user (id: $userId) {
+         id
+         firstName
+         subscribedToUser {
+               id
+               firstName
+         }
+         posts {
+               id
+               title
+         }
+      }
+   }  
+   ```   
+   Example variables:
+   ```
+   {
+      "userId":"550d8113-d76f-4d7d-af55-d3bb342ddbe4"
+   }   
+   ```    
+   2.7. Get users with their `userSubscribedTo`, `subscribedToUser` (additionally for each user in `userSubscribedTo`, `subscribedToUser` add their `userSubscribedTo`, `subscribedToUser`). 
+   ``` 
+   {
+      users {
+         id
+         firstName
+         userSubscribedTo {
+               id
+               firstName
+               userSubscribedTo {
+                  id
+                  firstName
+               }
+               subscribedToUser {
+                  id
+                  firstName
+               }
+         }
+         subscribedToUser {
+               id
+               firstName
+               userSubscribedTo {
+                  id
+                  firstName
+               }
+               subscribedToUser {
+                  id
+                  firstName
+               }
+         }
+      }
+   }
+   ``` 
    * Create gql requests:   
    2.8. Create user.  
    2.9. Create profile.  

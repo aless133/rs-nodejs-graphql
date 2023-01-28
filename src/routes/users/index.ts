@@ -41,6 +41,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       return profile;
     }
   );  
+
   fastify.get(
     '/:id/posts',
     {
@@ -52,6 +53,38 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       return await fastify.db.posts.findMany({ key: 'userId', equals: request.params.id });
     }
   );   
+
+  fastify.get(
+    '/:id/following',
+    {
+      schema: {
+        params: idParamSchema,
+      },
+    },
+    async function (request, reply): Promise<UserEntity[]> {
+      const user = await fastify.db.users.findOne({ key: 'id', equals: request.params.id });
+      if (!user) {
+        throw fastify.httpErrors.notFound('User not found');
+      }
+      return await fastify.db.users.findMany({ key: 'id', equalsAnyOf: user.subscribedToUserIds });
+    }
+  );  
+
+  fastify.get(
+    '/:id/followers',
+    {
+      schema: {
+        params: idParamSchema,
+      },
+    },
+    async function (request, reply): Promise<UserEntity[]> {
+      const user = await fastify.db.users.findOne({ key: 'id', equals: request.params.id });
+      if (!user) {
+        throw fastify.httpErrors.notFound('User not found');
+      }
+      return await fastify.db.users.findMany({ key: 'subscribedToUserIds', inArray: request.params.id });
+    }
+  ); 
 
   fastify.post(
     '/',

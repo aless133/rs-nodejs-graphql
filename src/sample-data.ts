@@ -48,12 +48,12 @@ export const addSampleData = async (db: DB) => {
   });
 
   const user3 = await db.users.create({
-    firstName: 'John',
+    firstName: 'Alan',
     lastName: 'Smith',
     email: 'smith@mail.com',
   });
   await db.profiles.create({
-    avatar: 'mister.jpg',
+    avatar: 'smith.jpg',
     sex: 'male',
     birthday: 3,
     country: 'GB',
