@@ -19,17 +19,4 @@ export class UsersAPI extends CommonAPI {
   async getPosts(id: string): Promise<PostEntity[]> {
     return this.get<PostEntity[]>(`users/${encodeURIComponent(id)}/posts`);
   }    
-
-  /*
-  async getMostViewedMovies(limit = '10'): Promise<Movie[]> {
-    const data = await this.get('movies', {
-      params: {
-        per_page: limit,
-
-        order_by: 'most_viewed',
-      },
-    });
-    return data.results;
-  }
-  */
 }

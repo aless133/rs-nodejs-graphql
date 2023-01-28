@@ -11,8 +11,8 @@ export const profilesResolver = {
   },
 
   Profile: {
-    memberType: (parent: any, { id }: { id: string }, { dataSources }: ApolloContext, info: any) => {
-      return dataSources.profilesAPI.getMemberType(id);
+    memberType: (parent: any, args: any, { dataSources }: ApolloContext, info: any) => {
+      return dataSources.memberTypesAPI.getMemberType(parent.memberTypeId);
     },
   }
 };

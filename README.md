@@ -12,9 +12,122 @@ If the properties of the entity are not specified, then return the id of it.
    
    * Get gql requests:  
    2.1. Get users, profiles, posts, memberTypes - 4 operations in one query.  
+   ```
+   {
+    users {
+        id
+        firstName
+        lastName
+        email
+        subscribedToUserIds
+    }
+    profiles {
+        id
+        avatar
+        sex
+        birthday
+        country
+        street
+        city
+        userId
+    }
+    posts {
+        id
+        title
+        content
+        userId
+    }
+    memberTypes {
+        id
+        monthPostsLimit
+        discount
+    }
+   }
+   ```
    2.2. Get user, profile, post, memberType by id - 4 operations in one query.  
+   ```
+   query getAllByIds($userId: ID!, $profileId:ID!, $postId:ID!,$memberTypeId: ID!) {
+      user (id: $userId) {
+         id
+         firstName
+         lastName
+         email
+      }
+      profile (id: $profileId) {
+         avatar
+         city
+      }
+      post (id: $postId) {
+         title
+      }
+      memberType (id: $memberTypeId) {
+         id
+         monthPostsLimit
+      }
+   }
+   ```
+   Example variables:
+   ```
+   {
+      "userId":"550d8113-d76f-4d7d-af55-d3bb342ddbe4",
+      "profileId":"495327db-df27-41ab-85ed-190a98b1d168",
+      "postId":"3aa3ac6c-bb29-4c0a-b52f-6db9fbdc5210",
+      "memberTypeId":"basic"
+   }   
+   ```    
+   
    2.3. Get users with their posts, profiles, memberTypes.  
+   ```
+   {
+      users {
+         id
+         firstName
+         lastName
+         email
+         profile {
+               id
+               avatar
+               memberType {
+                  id
+                  discount
+               }
+         }
+         posts {
+               id
+               title
+         }
+      }
+   }
+   ```
    2.4. Get user by id with his posts, profile, memberType.  
+   ```
+   query ($userId: ID!) {
+      user (id: $userId) {
+         id
+         firstName
+         lastName
+         email
+         profile {
+               id
+               avatar
+               memberType {
+                  id
+                  discount
+               }
+         }
+         posts {
+               id
+               title
+         }
+      }
+   }
+   ```   
+   Example variables:
+   ```
+   {
+      "userId":"550d8113-d76f-4d7d-af55-d3bb342ddbe4",
+   }   
+   ```       
    2.5. Get users with their `userSubscribedTo`, profile.  
    2.6. Get user by id with his `subscribedToUser`, posts.  
    2.7. Get users with their `userSubscribedTo`, `subscribedToUser` (additionally for each user in `userSubscribedTo`, `subscribedToUser` add their `userSubscribedTo`, `subscribedToUser`).  

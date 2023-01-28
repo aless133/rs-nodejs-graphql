@@ -13,18 +13,5 @@ export class ProfilesAPI extends CommonAPI {
 
   async getMemberType(id: string): Promise<MemberTypeEntity> {
     return this.get<MemberTypeEntity>(`profiles/${encodeURIComponent(id)}/member-type`);
-  }  
-
-  /*
-  async getMostViewedMovies(limit = '10'): Promise<Movie[]> {
-    const data = await this.get('movies', {
-      params: {
-        per_page: limit,
-
-        order_by: 'most_viewed',
-      },
-    });
-    return data.results;
   }
-  */
 }
