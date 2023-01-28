@@ -1,6 +1,6 @@
 import { ApolloServer } from '@apollo/server';
-// import fastifyApollo, { fastifyApolloHandler, ApolloFastifyContextFunction } from '@as-integrations/fastify';
 import { ApolloFastifyContextFunction } from '@as-integrations/fastify';
+import depthLimit from 'graphql-depth-limit'
 import typeDefs from './schema.graphql';
 
 import { usersResolver } from './resolvers/users.resolver';
@@ -34,6 +34,7 @@ const resolvers = {
 const apollo = new ApolloServer<ApolloContext>({
   typeDefs,
   resolvers,
+  validationRules:[depthLimit(6)],
 });
 let started = false;
 
