@@ -9,8 +9,17 @@ export class UsersAPI extends CommonAPI {
     return this.get<UserEntity[]>(`users/`);
   }
 
+  private usersLoader = new DataLoader(async (ids) => {
+    const usersList = await this.post(`users/byids`, { body: { ids } });
+    return ids.map((id) => usersList.find((user: UserEntity) => user.id === id));
+  });
+
+  async getUsersByIds(ids: string[]): Promise<UserEntity[]> {
+    return this.usersLoader.loadMany(ids);
+  }  
+
   async getUser(id: string): Promise<UserEntity> {
-    return this.get<UserEntity>(`users/${encodeURIComponent(id)}`);
+    return this.usersLoader.load(id);
   }
 
   private profilesLoader = new DataLoader(async (ids) => {
@@ -35,15 +44,11 @@ export class UsersAPI extends CommonAPI {
     return this.get<ProfileEntity>(`users/${encodeURIComponent(id)}/following`);
   }
 
-  async getFollowers(id: string): Promise<PostEntity[]> {
-    return this.get<PostEntity[]>(`users/${encodeURIComponent(id)}/followers`);
-  }
-
   async createUser(input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
     return this.post<UserEntity>(`users`, { body: input });
   }
   async updateUser(id: string, input: Partial<Omit<UserEntity, 'id' | 'subscribedToUserIds'>>): Promise<UserEntity> {
     return this.patch<UserEntity>(`users/${encodeURIComponent(id)}`, { body: input });
   }
-  
+
 }

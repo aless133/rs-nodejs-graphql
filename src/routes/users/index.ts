@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-schema-to-ts';
-import { idParamSchema } from '../../utils/reusedSchemas';
+import { idParamSchema, idsBodySchema } from '../../utils/reusedSchemas';
 import { createUserBodySchema, changeUserBodySchema, subscribeBodySchema } from './schemas';
 import type { UserEntity } from '../../utils/DB/entities/DBUsers';
 import type { ProfileEntity } from '../../utils/DB/entities/DBProfiles';
@@ -69,22 +69,6 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       return await fastify.db.users.findMany({ key: 'id', equalsAnyOf: user.subscribedToUserIds });
     }
   );  
-
-  fastify.get(
-    '/:id/followers',
-    {
-      schema: {
-        params: idParamSchema,
-      },
-    },
-    async function (request, reply): Promise<UserEntity[]> {
-      const user = await fastify.db.users.findOne({ key: 'id', equals: request.params.id });
-      if (!user) {
-        throw fastify.httpErrors.notFound('User not found');
-      }
-      return await fastify.db.users.findMany({ key: 'subscribedToUserIds', inArray: request.params.id });
-    }
-  ); 
 
   fastify.post(
     '/',
@@ -209,6 +193,19 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       }
     }
   );
+
+  fastify.post(
+    '/byids',
+    {
+      schema: {
+        body: idsBodySchema,
+      },
+    },
+    async function (request, reply): Promise<UserEntity[]> {
+      console.log(request.body);
+      return await fastify.db.users.findMany({ key: 'id', equalsAnyOf: request.body.ids });
+    }
+  );  
 };
 
 export default plugin;
