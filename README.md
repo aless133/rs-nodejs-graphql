@@ -315,6 +315,23 @@ If the properties of the entity are not specified, then return the id of it.
    ```
 
    2.14. Update post.  
+   ```
+   mutation ($id: ID!, $input: UpdatePostInput!) {
+      updatePost(id: $id, input: $input) {
+         id
+         title
+      }
+   }
+   ```
+   Example variables:
+   ```
+   {
+      "id": "863e25a6-2722-4f53-a6b4-8759c7280043",
+      "input":{
+         "title": "create title updated"
+      }
+   }
+   ```
    2.15. Update memberType.  
    2.16. Subscribe to; unsubscribe from.  
    2.17. [InputObjectType](https://graphql.org/graphql-js/type/#graphqlinputobjecttype) for DTOs.  
