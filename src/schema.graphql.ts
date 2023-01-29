@@ -64,6 +64,17 @@ type Post {
   userId: String!
 }
 
+input CreatePostInput {
+  title: String!
+  content: String!
+  userId: String!
+}
+
+input UpdatePostInput {
+  title: String
+  content: String
+}
+
 type MemberType {
   id: String!
   discount: Int
@@ -87,5 +98,7 @@ type Mutation {
   updateUser(id: ID!, input: UpdateUserInput!): User
   createProfile(input: CreateProfileInput!): Profile
   updateProfile(id: ID!, input: UpdateProfileInput!): Profile
+  createPost(input: CreatePostInput!): Post
+  updatePost(id: ID!, input: UpdatePostInput!): Post
 }
 `;

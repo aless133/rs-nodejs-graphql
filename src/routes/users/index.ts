@@ -205,6 +205,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       return await fastify.db.users.findMany({ key: 'id', equalsAnyOf: request.body.ids });
     }
   ); 
+  
   fastify.post(
     '/followingbyuserids',
     {

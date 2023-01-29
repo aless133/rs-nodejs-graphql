@@ -248,7 +248,26 @@ If the properties of the entity are not specified, then return the id of it.
    }   
    ```
 
-   2.10. Create post.  
+   2.10. Create post. 
+   ```
+   mutation ($input: CreatePostInput!) {
+      createPost(input: $input) {
+         id
+         title
+      }
+   }    
+   ```
+   Example variables: 
+   ```
+   {
+      "input":{
+         "title": "create title",
+         "content": "create content",
+         "userId": "9043e1c4-9dbe-4050-877a-0365c2c58b90"
+      }
+   }   
+   ```
+
    2.11. [InputObjectType](https://graphql.org/graphql-js/type/#graphqlinputobjecttype) for DTOs.  
    
    #### Update gql requests:
