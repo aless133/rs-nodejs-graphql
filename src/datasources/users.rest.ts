@@ -4,10 +4,13 @@ import type { ProfileEntity } from '../utils/DB/entities/DBProfiles';
 import type { PostEntity } from '../utils/DB/entities/DBPosts';
 import DataLoader from 'dataloader';
 
-
 export class UsersAPI extends CommonAPI {
   async getUsers(): Promise<UserEntity[]> {
-    return this.get<UserEntity[]>(`users/`);
+    const users = await this.get<UserEntity[]>(`users/`);
+    users.forEach((user) => {
+      this.usersLoader.prime(user.id, user);
+    });
+    return users;
   }
 
   private usersLoader = new DataLoader(async (ids) => {
@@ -55,7 +58,7 @@ export class UsersAPI extends CommonAPI {
   async createUser(input: CreateUserDTO): Promise<UserEntity> {
     return this.post<UserEntity>(`users`, { body: input });
   }
-  
+
   async updateUser(id: string, input: ChangeUserDTO): Promise<UserEntity> {
     return this.patch<UserEntity>(`users/${encodeURIComponent(id)}`, { body: input });
   }
@@ -67,6 +70,4 @@ export class UsersAPI extends CommonAPI {
   async unsubscribeUser(id: string, input: SubscribeUserDTO): Promise<UserEntity> {
     return this.post<UserEntity>(`users/${encodeURIComponent(id)}/unsubscribeFrom`, { body: input });
   }
-
-
 }
