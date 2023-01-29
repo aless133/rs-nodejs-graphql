@@ -86,6 +86,10 @@ input UpdateMemberTypeInput {
   monthPostsLimit: Int
 }
 
+input SubscribeUserInput {
+  userId: ID!
+}
+
 type Query {
   time: String
   users: [User]
@@ -106,5 +110,7 @@ type Mutation {
   createPost(input: CreatePostInput!): Post
   updatePost(id: ID!, input: UpdatePostInput!): Post
   updateMemberType(id: ID!, input: UpdateMemberTypeInput!): MemberType
+  subscribeUser(id: ID!, input: SubscribeUserInput!): User 
+  unsubscribeUser(id: ID!, input: SubscribeUserInput!): User 
 }
 `;

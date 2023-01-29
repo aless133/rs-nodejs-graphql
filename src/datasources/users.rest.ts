@@ -1,8 +1,9 @@
-import { CommonAPI, CreateUserDTO, ChangeUserDTO } from './common.rest';
+import { CommonAPI, CreateUserDTO, ChangeUserDTO, SubscribeUserDTO } from './common.rest';
 import type { UserEntity } from '../utils/DB/entities/DBUsers';
 import type { ProfileEntity } from '../utils/DB/entities/DBProfiles';
 import type { PostEntity } from '../utils/DB/entities/DBPosts';
 import DataLoader from 'dataloader';
+
 
 export class UsersAPI extends CommonAPI {
   async getUsers(): Promise<UserEntity[]> {
@@ -58,4 +59,14 @@ export class UsersAPI extends CommonAPI {
   async updateUser(id: string, input: ChangeUserDTO): Promise<UserEntity> {
     return this.patch<UserEntity>(`users/${encodeURIComponent(id)}`, { body: input });
   }
+
+  async subscribeUser(id: string, input: SubscribeUserDTO): Promise<UserEntity> {
+    return this.post<UserEntity>(`users/${encodeURIComponent(id)}/subscribeTo`, { body: input });
+  }
+
+  async unsubscribeUser(id: string, input: SubscribeUserDTO): Promise<UserEntity> {
+    return this.post<UserEntity>(`users/${encodeURIComponent(id)}/unsubscribeFrom`, { body: input });
+  }
+
+
 }

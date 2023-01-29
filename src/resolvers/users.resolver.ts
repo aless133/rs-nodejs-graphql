@@ -1,5 +1,5 @@
 import { ApolloContext } from '../apollo';
-import { CreateUserDTO, ChangeUserDTO } from '../datasources/common.rest';
+import { CreateUserDTO, ChangeUserDTO, SubscribeUserDTO } from '../datasources/common.rest';
 
 export const usersResolver = {
   Query: {
@@ -31,5 +31,11 @@ export const usersResolver = {
     updateUser: (parent: any, { id, input }: { id: string; input: ChangeUserDTO }, { dataSources }: ApolloContext) => {
       return dataSources.usersAPI.updateUser(id, input);
     },
+    subscribeUser: (parent: any, { id, input }: { id: string; input: SubscribeUserDTO }, { dataSources }: ApolloContext) => {
+      return dataSources.usersAPI.subscribeUser(id, input);
+    },
+    unsubscribeUser: (parent: any, { id, input }: { id: string; input: SubscribeUserDTO }, { dataSources }: ApolloContext) => {
+      return dataSources.usersAPI.unsubscribeUser(id, input);
+    },    
   },
 };

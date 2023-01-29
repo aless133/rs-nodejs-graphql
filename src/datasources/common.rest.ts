@@ -16,6 +16,10 @@ import { MemberTypeEntity } from '../utils/DB/entities/DBMemberTypes';
 // export type CreateMemberTypeDTO = MemberTypeEntity;
 export type ChangeMemberTypeDTO = Partial<Omit<MemberTypeEntity, 'id'>>;
 
+export type SubscribeUserDTO = {
+  userId: string;
+}
+
 export class CommonAPI extends RESTDataSource {
   override baseURL = 'http://localhost:3000/';
 }
