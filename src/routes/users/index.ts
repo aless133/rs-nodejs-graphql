@@ -202,10 +202,20 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       },
     },
     async function (request, reply): Promise<UserEntity[]> {
-      console.log(request.body);
       return await fastify.db.users.findMany({ key: 'id', equalsAnyOf: request.body.ids });
     }
-  );  
+  ); 
+  fastify.post(
+    '/followingbyuserids',
+    {
+      schema: {
+        body: idsBodySchema,
+      },
+    },
+    async function (request, reply): Promise<UserEntity[]> {
+      return await fastify.db.users.findMany({ key: 'subscribedToUserIds', inArrayAnyOf: request.body.ids });
+    }
+  );   
 };
 
 export default plugin;

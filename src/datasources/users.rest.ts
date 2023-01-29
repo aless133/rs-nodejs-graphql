@@ -40,8 +40,13 @@ export class UsersAPI extends CommonAPI {
     return this.postsLoader.load(id);
   }
 
-  async getFollowing(id: string): Promise<ProfileEntity> {
-    return this.get<ProfileEntity>(`users/${encodeURIComponent(id)}/following`);
+  private followingsLoader = new DataLoader(async (ids) => {
+    const followingsList = await this.post(`users/followingbyuserids`, { body: { ids } });
+    return ids.map((id) => followingsList.filter((user: UserEntity) => user.subscribedToUserIds.includes(id as string)));
+  });  
+
+  async getFollowing(id: string): Promise<UserEntity> {
+    return this.followingsLoader.load(id);
   }
 
   async createUser(input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
