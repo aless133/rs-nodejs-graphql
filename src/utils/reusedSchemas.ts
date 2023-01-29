@@ -5,3 +5,11 @@ export const idParamSchema = {
     id: { type: 'string' },
   },
 } as const;
+
+export const idsBodySchema = {
+  type: 'object',
+  required: ['ids'],
+  properties: {
+    ids: { type: 'array', items: { type: 'string' } },
+  },
+} as const;

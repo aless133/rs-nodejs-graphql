@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-schema-to-ts';
-import { idParamSchema } from '../../utils/reusedSchemas';
+import { idParamSchema, idsBodySchema } from '../../utils/reusedSchemas';
 import { createProfileBodySchema, changeProfileBodySchema } from './schema';
 import type { ProfileEntity } from '../../utils/DB/entities/DBProfiles';
 // import type { MemberTypeEntity } from '../../utils/DB/entities/DBMemberTypes';
@@ -55,7 +55,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
         return await fastify.db.profiles.delete(request.params.id);
       } catch (error) {
         throw fastify.httpErrors.badRequest(error as string);
-      }      
+      }
     }
   );
 
@@ -72,9 +72,22 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
         return await fastify.db.profiles.change(request.params.id, request.body);
       } catch (error) {
         throw fastify.httpErrors.badRequest(error as string);
-      }      
+      }
     }
   );
+
+  fastify.post(
+    '/byuserids',
+    {
+      schema: {
+        body: idsBodySchema,
+      },
+    },
+    async function (request, reply): Promise<ProfileEntity[]> {
+      return await fastify.db.profiles.findMany({ key: 'userId', equalsAnyOf: request.body.ids });
+    }
+  );
+    
 };
 
 export default plugin;

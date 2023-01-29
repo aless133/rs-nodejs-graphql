@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-schema-to-ts';
-import { idParamSchema } from '../../utils/reusedSchemas';
+import { idParamSchema, idsBodySchema } from '../../utils/reusedSchemas';
 import { createPostBodySchema, changePostBodySchema } from './schema';
 import type { PostEntity } from '../../utils/DB/entities/DBPosts';
 
@@ -71,6 +71,19 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (fastify): Promise<void> 
       }        
     }
   );
+
+  fastify.post(
+    '/byuserids',
+    {
+      schema: {
+        body: idsBodySchema,
+      },
+    },
+    async function (request, reply): Promise<PostEntity[]> {
+      return await fastify.db.posts.findMany({ key: 'userId', equalsAnyOf: request.body.ids });
+    }
+  );
+
 };
 
 export default plugin;
