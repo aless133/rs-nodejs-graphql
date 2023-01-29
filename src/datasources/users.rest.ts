@@ -1,4 +1,4 @@
-import { CommonAPI } from './common.rest';
+import { CommonAPI, CreateUserDTO, ChangeUserDTO } from './common.rest';
 import type { UserEntity } from '../utils/DB/entities/DBUsers';
 import type { ProfileEntity } from '../utils/DB/entities/DBProfiles';
 import type { PostEntity } from '../utils/DB/entities/DBPosts';
@@ -16,7 +16,7 @@ export class UsersAPI extends CommonAPI {
 
   async getUsersByIds(ids: string[]): Promise<UserEntity[]> {
     return this.usersLoader.loadMany(ids);
-  }  
+  }
 
   async getUser(id: string): Promise<UserEntity> {
     return this.usersLoader.load(id);
@@ -42,18 +42,20 @@ export class UsersAPI extends CommonAPI {
 
   private followingsLoader = new DataLoader(async (ids) => {
     const followingsList = await this.post(`users/followingbyuserids`, { body: { ids } });
-    return ids.map((id) => followingsList.filter((user: UserEntity) => user.subscribedToUserIds.includes(id as string)));
-  });  
+    return ids.map((id) =>
+      followingsList.filter((user: UserEntity) => user.subscribedToUserIds.includes(id as string))
+    );
+  });
 
   async getFollowing(id: string): Promise<UserEntity> {
     return this.followingsLoader.load(id);
   }
 
-  async createUser(input: Omit<UserEntity, 'id' | 'subscribedToUserIds'>): Promise<UserEntity> {
+  async createUser(input: CreateUserDTO): Promise<UserEntity> {
     return this.post<UserEntity>(`users`, { body: input });
   }
-  async updateUser(id: string, input: Partial<Omit<UserEntity, 'id' | 'subscribedToUserIds'>>): Promise<UserEntity> {
+  
+  async updateUser(id: string, input: ChangeUserDTO): Promise<UserEntity> {
     return this.patch<UserEntity>(`users/${encodeURIComponent(id)}`, { body: input });
   }
-
 }
