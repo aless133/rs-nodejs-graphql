@@ -12,6 +12,10 @@ import { PostEntity } from '../utils/DB/entities/DBPosts';
 export type CreatePostDTO = Omit<PostEntity, 'id'>;
 export type ChangePostDTO = Partial<Omit<PostEntity, 'id' | 'userId'>>;
 
+import { MemberTypeEntity } from '../utils/DB/entities/DBMemberTypes';
+// export type CreateMemberTypeDTO = MemberTypeEntity;
+export type ChangeMemberTypeDTO = Partial<Omit<MemberTypeEntity, 'id'>>;
+
 export class CommonAPI extends RESTDataSource {
   override baseURL = 'http://localhost:3000/';
 }

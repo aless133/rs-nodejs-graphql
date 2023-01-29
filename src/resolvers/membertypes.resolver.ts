@@ -1,4 +1,5 @@
 import { ApolloContext } from '../apollo';
+import { ChangeMemberTypeDTO } from '../datasources/common.rest';
 
 export const memberTypesResolver = {
   Query: {
@@ -9,4 +10,9 @@ export const memberTypesResolver = {
       return dataSources.memberTypesAPI.getMemberType(id);
     },
   },
+  Mutation: {
+    updateMemberType: (parent: any, { id, input }: { id: string; input: ChangeMemberTypeDTO }, { dataSources }: ApolloContext) => {
+      return dataSources.memberTypesAPI.updateMemberType(id, input);
+    },
+  },    
 };

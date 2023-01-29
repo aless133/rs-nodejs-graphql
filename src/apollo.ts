@@ -29,6 +29,7 @@ const resolvers = {
     ...usersResolver.Mutation,
     ...profilesResolver.Mutation,
     ...postsResolver.Mutation,
+    ...memberTypesResolver.Mutation,
   },
 };
 

@@ -1,4 +1,4 @@
-import { CommonAPI } from './common.rest';
+import { CommonAPI, ChangeMemberTypeDTO } from './common.rest';
 import type { MemberTypeEntity } from '../utils/DB/entities/DBMemberTypes';
 import DataLoader from 'dataloader';
 
@@ -15,4 +15,8 @@ export class MemberTypesAPI extends CommonAPI {
   async getMemberType(id: string): Promise<MemberTypeEntity> {
     return this.memberTypesLoader.load(id);
   }
+
+  async updateMemberType(id: string, input: ChangeMemberTypeDTO): Promise<MemberTypeEntity> {
+    return this.patch<MemberTypeEntity>(`member-types/${encodeURIComponent(id)}`, { body: input });
+  }   
 }

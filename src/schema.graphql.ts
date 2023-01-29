@@ -81,6 +81,11 @@ type MemberType {
   monthPostsLimit: Int
 }
 
+input UpdateMemberTypeInput {
+  discount: Int
+  monthPostsLimit: Int
+}
+
 type Query {
   time: String
   users: [User]
@@ -100,5 +105,6 @@ type Mutation {
   updateProfile(id: ID!, input: UpdateProfileInput!): Profile
   createPost(input: CreatePostInput!): Post
   updatePost(id: ID!, input: UpdatePostInput!): Post
+  updateMemberType(id: ID!, input: UpdateMemberTypeInput!): MemberType
 }
 `;
